@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div class="container">
+    <form class="sub-container" class="form">
+      <!-- shit will generate here -->
+    </form>
+  </div>
+  <script>
+    let QuestionGroups = [
+      {
+        name: "Grup 1",
+        personalityA: "I",
+        personalityB: "E",
+        questions: [
+          {
+            question: 'When preparing for a meeting, do you prefer to:',
+            a: "Review your notes and gather your thoughts on your own before the meeting.",
+            b: "Reach out to colleagues for input and discuss ideas with others before the meeting.",
+          },
+          {
+            question: 'When making a presentation to a large group, do you prefer to:',
+            a: "Prepare thoroughly beforehand and stick to your script during the presentation.",
+            b: "Ad-lib and adjust your presentation based on the audience's reactions.",
+          },
+          {
+            question: 'When networking at a conference or social event, do you prefer to:',
+            a: "Review your notes and gather your thoughts on your own before the meeting.",
+            b: "Introduce yourself to new people and strike up conversations with as many people as possible.",
+          }
+        ]
+      },
+      {
+        name: "Grup 2",
+        personalityA: "S",
+        personalityB: "N",
+        questions: [
+          {
+            question: 'When problem-solving, do you prefer to:',
+            a: "Analyze the available data and facts to make a decision.",
+            b: "Consider possibilities and potential outcomes to brainstorm creative solutions.",
+          },
+          {
+            question: 'When planning a project, do you prefer to:',
+            a: "Create a detailed plan with specific steps and timelines.",
+            b: "Develop a broad outline with flexibility for adjustments based on changing circumstances.",
+          },
+          {
+            question: 'When learning a new skill, do you prefer to:',
+            a: "Follow a structured process with clear instructions and demonstrations.",
+            b: "Experiment and learn by trial and error, with less emphasis on step-by-step guidance.",
+          }
+        ]
+      },
+      {
+        name: "Grup 3",
+        personalityA: "T",
+        personalityB: "F",
+        questions: [
+          {
+            question: 'When making a decision, do you prefer to:',
+            a: "Consider the pros and cons logically and objectively before making a choice.",
+            b: "Take into account the potential impact on people and relationships before making a choice.",
+          },
+          {
+            question: 'When providing feedback to a colleague, do you prefer to:',
+            a: "Focus on specific areas for improvement and provide constructive criticism.",
+            b: "Acknowledge the colleague's efforts and strengths and provide positive feedback.",
+          },
+          {
+            question: 'When collaborating on a project, do you prefer to:',
+            a: "Focus on the task at hand and work towards completing it efficiently.",
+            b: "Foster open communication and encourage everyone to contribute ideas and feelings to reach a collaborative solution.",
+          }
+        ]
+      },
+      {
+        name: "Grup 4",
+        personalityA: "J",
+        personalityB: "P",
+        questions: [
+          {
+            question: 'When managing your workload, do you prefer to:',
+            a: "Create a detailed plan with specific steps and timelines.",
+            b: "Respond to tasks as they come up, adjusting your priorities based on changing circumstances.",
+          },
+          {
+            question: 'When working on a project, do you prefer to:',
+            a: "Focus on completing each task in order, without deviating from the plan.",
+            b: "Be open to new opportunities and ideas that arise, adjusting your plan as needed.",
+          },
+          {
+            question: 'When faced with an unexpected challenge, do you prefer to:',
+            a: "When faced with an unexpected challenge, do you prefer to:",
+            b: "Explore multiple options and experiment with different approaches to find a solution.",
+          }
+        ]
+      }
+    ]
+    let answers = [{ a: 0, b: 0 }, { a: 0, b: 0 }, { a: 0, b: 0 }, { a: 0, b: 0 }];
+    let container = document.querySelector(".sub-container");
+    let i = 0;
+    let g = 0;
+    QuestionGroups.forEach(group => {
+      group.questions.forEach(question => {
+        container.innerHTML +=
+          `<h2>${question.question}</h2>
+        <div class="inputGroup">
+          <input id="radio${i}" value="a" name="${g}" type="radio" />
+          <label for="radio${i}">${question.a}</label>
+        </div>
+        <div class="inputGroup">
+          <input id="radio${i + 1}" value="b" name="${g}" type="radio" />
+          <label for="radio${i + 1}">${question.b}</label>
+        </div>`
+        i += 2;
+        g++;
+      })
+      container.innerHTML += `<hr/>`
+    });
+    container.innerHTML += `<button type="submit">Submit</button>`
+    container.addEventListener("submit", submit);
+    function setAnswer(index, answer) {
+      let a = 0;
+      let b = 0;
+      if (answer === "a") {
+        a++;
+      } else {
+        b++;
+      }
+      if (index <= 2) {
+        answers[0].a += a;
+        answers[0].b += b;
+      }
+      if (index <= 5 && index > 2) {
+        answers[1].a += a;
+        answers[1].b += b;
+      }
+      if (index <= 8 && index > 5) {
+        answers[2].a += a;
+        answers[2].b += b;
+      }
+      if (index <= 11 && index > 8) {
+        answers[3].a += a;
+        answers[3].b += b;
+      }
+    };
+    function getResults() {
+      let results = '';
+      if (answers[0].a > answers[0].b) {
+        results += 'I';
+      } else {
+        results += 'E';
+      }
+      if (answers[1].a > answers[1].b) {
+        results += 'S';
+      } else {
+        results += 'N';
+      }
+      if (answers[2].a > answers[2].b) {
+        results += 'T';
+      } else {
+        results += 'F';
+      }
+      if (answers[3].a > answers[3].b) {
+        results += 'J';
+      } else {
+        results += 'P';
+      }
+      answers = [{ a: 0, b: 0 }, { a: 0, b: 0 }, { a: 0, b: 0 }, { a: 0, b: 0 }];
+      return results;
+    };
+    function submit(event) {
+      event.preventDefault();
+      const data = new FormData(event.target);
+      let count = 0
+      for (var pair of data.entries()) {
+        count++
+      }
+      if (count !== 12) {
+        alert("Please answer all questions");
+        return;
+      }
+      for (var pair of data.entries()) {
+        setAnswer(Number(pair[0]), pair[1]);
+      }
+      alert(getResults());
+    };
+  </script>
+</body>
+<style>
+  body {
+    background-color: #0069d9;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+  }
+
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+  }
+
+  .sub-container {
+    width: 80%;
+  }
+
+  form {
+    width: 80%;
+    background-color: white;
+    padding: 16px;
+    border-radius: 4px;
+  }
+
+  label {
+    padding: 8px;
+    margin: 0 8px;
+    font-size: 1.5rem;
+    background-color: white;
+    display: block;
+    cursor: pointer;
+  }
+
+  input[type="radio"] {
+    display: none;
+  }
+
+  input[type="radio"]:checked+label {
+    border-radius: 4px;
+    border: #00adf7 2px solid;
+    box-shadow: #c3c3c3 0 5px 5px;
+  }
+
+  button {
+    float: right;
+    padding: 8px 16px;
+    border-radius: 4px;
+    border: #00adf7 2px solid;
+    background-color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  button:hover {
+    background-color: #00adf7;
+    color: white;
+  }
+</style>
+
+</html>
